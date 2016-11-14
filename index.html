@@ -1,86 +1,132 @@
 ﻿<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title>A WebGL Test</title>
-</head>
-<body>
-    <style type="text/css">
-        html, body {margin: 0; height: 100%; overflow: hidden}
-        canvas {
-            width:100%;
-            height:100%;
-        }
-    </style>
-    <script src="three.min.js"></script>
-    <script src="functions.js"></script>
-    <script>
-        var lastDownTarget;
-
-        function keydown(event) {
-            log(event);
-        }
-
-        function mousedown(event) {
-            log(event);
-        }
-
-        function keyup(event) {
-            log(event);
-        }
-
-        function mouseup(event) {
-            log(event);
-        }
-
+    <head>
+        <meta charset="utf-8" />
+        <title>A WebGL Test</title>
+    </head>
+    <body>
+        <style type="text/css">
+            @font-face { font-family: Delicious; src: url('Aileron-Thin.otf'); }
+            html, body {margin: 0; height: 100%; overflow: hidden;font-family: Delicious; font-size:20px; cursor:default;}
+            canvas {
+                width:100%;
+                height:100%;
+            }
+        </style>
+        <script src="three.min.js"></script>
+        <script src="functions.js"></script>
+        <script>
+            function fullScreen(canvas){
+                if (canvas.requestFullscreen) {
+                    canvas.requestFullscreen();
+                } else if (canvas.webkitRequestFullscreen) {
+                    canvas.webkitRequestFullscreen();
+                } else if (canvas.mozRequestFullScreen) {
+                    canvas.mozRequestFullScreen();
+                } else if (canvas.msRequestFullscreen) {
+                    canvas.msRequestFullscreen();
+                }
+            }
+            var lastDownTarget;
         var scene = new THREE.Scene();
         //var keyboard = new THREE.key
         var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
         var renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         var canvas = document.body.appendChild(renderer.domElement);
-        //document.getElementsByTagName("canvas")[0];
+        
+        
+        
+        var text2 = document.createElement('div');
+        text2.style.position = 'absolute';
+        //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+        text2.style.width = 100;
+        text2.style.height = 100;
+        //text2.style.backgroundColor = "blue";
+        text2.style.color = "white";
+        text2.innerHTML = "";
+        text2.style.top = 200 + 'px';
+        text2.style.left = 200 + 'px';
+        document.body.appendChild(text2);
+        
+        var string = "Click to go fullscreen";
+        
+        
+        
+        window.addEventListener( 'resize', onWindowResize, false );
+        function onWindowResize() {
+            windowHalfX = window.innerWidth / 2;
+            windowHalfY = window.innerHeight / 2;
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            
+            var rslt = toXYCoords(text2.style.pos);
+            text2.style.pos = rslt;
+        }
 
+        
+        function keydown(event) {
+            log(event.keyCode);
+            //event.keylister();
+        }
+        function mousedown(event) {
+            log(event);
+            fullScreen(document.getElementsByTagName("body")[0]);
+        }
+        function keyup(event) {
+            log(event);
+        }
+        function mouseup(event) {
+            log(event);
+        }
+        //document.getElementsByTagName("canvas")[0];
         var geometry = new THREE.BoxGeometry(1,1,1);
         var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         var cube = new THREE.Mesh(geometry, material);
         scene.add(cube);
         camera.position.z = 5;
-
+        var i = 0;
+        var j = 0;
         var render = function () {
             requestAnimationFrame(render);
             cube.rotation.x += 0.1;
             cube.rotation.y += 0.1;
-
             renderer.render(scene, camera);
             //log("repeat!");
             //log("hello?");
+            if(i == 4){
+                text2.innerHTML += string.charAt(j);
+                i = 0;
+                j++;
+            }
+            log(i);
+            i++;
         };
-
         render();
-
         document.addEventListener('mousedown', function (event) {
             lastDownTarget = event.target;
             mousedown(event);
         }, false);
-
+                                  
         document.addEventListener('keydown', function (event) {
             if (lastDownTarget == canvas) {
-                keydown(event);
+            keydown(event);
             }
         }, false);
-
+        
         document.addEventListener('mouseup', function (event) {
             mouseup(event);
         }, false);
-
+        
         document.addEventListener('keyup', function (event) {
             if (lastDownTarget == canvas) {
                 keyup(event);
             }
         }, false);
-    </script>
 
-</body>
+            </script>
+        
+    </body>
 </html>
