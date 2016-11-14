@@ -18,11 +18,19 @@
     <script>
         var lastDownTarget;
 
-        function keyevent(event) {
+        function keydown(event) {
             log(event);
         }
 
-        function mouseevent(event) {
+        function mousedown(event) {
+            log(event);
+        }
+
+        function keyup(event) {
+            log(event);
+        }
+
+        function mouseup(event) {
             log(event);
         }
 
@@ -55,12 +63,24 @@
         document.addEventListener('mousedown', function (event) {
             lastDownTarget = event.target;
             //alert('mousedown');
-            mouseevent(event);
+            mousedown(event);
         }, false);
 
         document.addEventListener('keydown', function (event) {
             if (lastDownTarget == canvas) {
-                keyevent(event);
+                keydown(event);
+            }
+        }, false);
+
+        document.addEventListener('mouseup', function (event) {
+            lastDownTarget = event.target;
+            //alert('mousedown');
+            mouseup(event);
+        }, false);
+
+        document.addEventListener('keyup', function (event) {
+            if (lastDownTarget == canvas) {
+                keyup(event);
             }
         }, false);
     </script>
