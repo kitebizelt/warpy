@@ -62,7 +62,6 @@
 
         document.addEventListener('mousedown', function (event) {
             lastDownTarget = event.target;
-            //alert('mousedown');
             mousedown(event);
         }, false);
 
@@ -73,8 +72,6 @@
         }, false);
 
         document.addEventListener('mouseup', function (event) {
-            lastDownTarget = event.target;
-            //alert('mousedown');
             mouseup(event);
         }, false);
 
